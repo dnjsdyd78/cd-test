@@ -28,5 +28,5 @@ jobs:
       - name: Build and push Docker image
         run: |
           docker build -f Dockerfile-batch -t project509-batch:latest .
-          docker tag project509-batch:latest my-dockerhub-user/project509-batch:latest
-          docker push CD-test/project509-batch:latest
+          docker tag project509-batch:latest cd-test/project509-batch:latest
+          docker push cd-test/project509-batch:latest
