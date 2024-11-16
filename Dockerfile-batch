@@ -8,7 +8,7 @@ COPY . .
 #RUN ./module-batch/gradlew :module-batch:build --no-daemon
 
 # 루트프로젝트 라이브러리 JAR 파일 복사
-COPY build/libs/*plain.jar app.jar
+COPY build/libs/*.jar app.jar
 # 배치 모듈 JAR 파일 복사
 COPY module-batch/build/libs/*.jar app.jar
 
