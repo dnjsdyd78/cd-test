@@ -10,7 +10,7 @@ COPY . .
 # 루트프로젝트 라이브러리 JAR 파일 복사
 COPY build/libs/Project509-0.0.1-SNAPSHOT-plain.jar app.jar
 # 배치 모듈 JAR 파일 복사
-#COPY module-batch/build/libs/module-batch-0.0.1-SNAPSHOT.jar app.jar
+COPY module-batch/build/libs/module-batch-0.0.1-SNAPSHOT.jar app.jar
 
 # wait-for-it.sh 스크립트를 컨테이너로 복사
 COPY wait-for-it.sh /wait-for-it.sh
