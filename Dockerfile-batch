@@ -4,7 +4,7 @@ FROM openjdk:17-jdk-slim
 COPY . .
 
 # 배치모듈의 클린과 빌드
-RUN ./gradlew :module-batch:clean :module-batch:build --no-daemon
+RUN gradlew :module-batch:clean :module-batch:build --no-daemon
 
 # 루트프로젝트 라이브러리 JAR 파일 복사
 COPY build/libs/*plain.jar app.jar
