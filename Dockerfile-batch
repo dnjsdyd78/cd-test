@@ -1,0 +1,18 @@
+FROM openjdk:17-jdk-slim
+
+# 소스 코드 복사
+COPY . .
+
+# 배치모듈의 클린과 빌드
+RUN gradle :module-batch:clean :module-batch:build --no-daemon
+# 루트프로젝트 라이브러리 JAR 파일 복사
+COPY build/libs/*plain.jar app.jar
+# 배치 모듈 JAR 파일 복사
+COPY module-batch/build/libs/*.jar app.jar
+
+# wait-for-it.sh 스크립트를 컨테이너로 복사
+COPY wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
+
+# wait-for-it.sh를 통해 db 서비스가 시작될 때까지 대기한 후 애플리케이션 시작
+ENTRYPOINT ["/wait-for-it.sh", "db:3306", "--", "java", "-jar", "app.jar"]
