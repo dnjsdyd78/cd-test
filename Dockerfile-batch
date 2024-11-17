@@ -3,14 +3,14 @@ FROM openjdk:17-jdk-slim
 # 소스 코드 복사
 COPY . .
 
-# 배치모듈의 클린과 빌드 (서브모듈 빌드를 위한 명령어)
-RUN cd module-batch && ./gradlew build -x test --no-daemon
+# 배치모듈의 빌드 (서브모듈 빌드를 위한 명령어)
+RUN ./module-batch/gradlew :module-batch:build -x test --no-daemon
 
 # 환경변수파일 복사
-COPY src/main/resources/application.properties application.properties
+RUN cp src/main/resources/application.properties application.properties
 
 # 배치모듈 JAR 파일 복사 (빌드 후 생성된 JAR 파일을 컨테이너 내로 복사)
-COPY module-batch/build/libs/module-batch-0.0.1-SNAPSHOT.jar app.jar
+RUN cp module-batch/build/libs/*.jar app.jar
 
 # wait-for-it.sh 스크립트를 컨테이너로 복사
 COPY wait-for-it.sh /wait-for-it.sh
