@@ -3,21 +3,18 @@ FROM openjdk:17-jdk-slim
 # 소스 코드 복사
 COPY . .
 
-# 배치모듈의 클린과 빌드
-#RUN ./gradlew clean build
-#RUN ./module-batch/gradlew :module-batch:build --no-daemon
+# 배치모듈의 클린과 빌드 (서브모듈 빌드를 위한 명령어)
+RUN cd module-batch && ./gradlew build -x test --no-daemon
 
 # 환경변수파일 복사
-COPY src/main/resources/application.properties /app/application.properties
+COPY src/main/resources/application.properties application.properties
 
-# 루트프로젝트 라이브러리 JAR 파일 복사
-COPY build/libs/Project509-0.0.1-SNAPSHOT-plain.jar app.jar
-# 배치 모듈 JAR 파일 복사
-COPY module-batch/build/libs/module-batch-0.0.1-SNAPSHOT.jar app.jar
+# 배치모듈 JAR 파일 복사 (빌드 후 생성된 JAR 파일을 컨테이너 내로 복사)
+RUN module-batch/build/libs/module-batch-0.0.1-SNAPSHOT.jar app.jar
 
 # wait-for-it.sh 스크립트를 컨테이너로 복사
 COPY wait-for-it.sh /wait-for-it.sh
 RUN chmod +x /wait-for-it.sh
 
-# wait-for-it.sh를 통해 db 서비스가 시작될 때까지 대기한 후 애플리케이션 시작
-ENTRYPOINT ["/wait-for-it.sh", "db:3306", "--", "-Dspring.config.location=file:/app/application.properties", "java", "-jar", "app.jar"]
+# DB 서비스가 시작될 때까지 대기 후 애플리케이션 실행
+ENTRYPOINT ["/wait-for-it.sh", "db:3306", "--", "-Dspring.config.location=file:application.properties", "java", "-jar", "app.jar"]
