@@ -51,7 +51,16 @@ jobs:
             # Docker 이미지 풀 및 실행
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}
             sudo docker stop $(sudo docker ps -a -q)
-            sudo docker run -d --log-driver=syslog -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/{{ secrets.IMAGE_NAME }}
+            sudo docker run -d \
+              -p 8080:8080 \
+              -e API_PORT=${{ secrets.API_PORT }} \
+              -e API_URL=${{ secrets.API_URL }} \
+              -e RDS_ENDPOINT=${{ secrets.RDS_ENDPOINT }} \${{ secrets. }}
+              -e DB_NAME=${{ secrets.DB_NAME }} \
+              -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+              -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
+              -e ITEM_API_KEY=${{ secrets.ITEM_API_KEY }} \
+              ${{ secrets.DOCKER_USERNAME }}/{{ secrets.IMAGE_NAME }}
             # 중지된 컨테이너 제거, 사용하지 않는 도커 이미지 제거
             sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
             sudo docker image prune -a -f
