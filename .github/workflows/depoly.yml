@@ -36,6 +36,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Docker image pull & Deploy to EC2
         uses: appleboy/ssh-action@master
