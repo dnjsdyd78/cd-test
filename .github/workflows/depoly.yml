@@ -43,7 +43,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_IP }} # 퍼블릭 IP
           username: ubuntu
-          key: ${{secerts.BATCH_EC2_KEY}} # SSH 비공개 키값
+          key: ${{secrets.BATCH_EC2_KEY}} # SSH 비공개 키값
           # Docker pull & run
           script: |
             # EC2 내에서 Docker 로그인
