@@ -55,7 +55,7 @@ jobs:
               -p 8080:8080 \
               -e API_PORT=${{ secrets.API_PORT }} \
               -e API_URL=${{ secrets.API_URL }} \
-              -e RDS_ENDPOINT=${{ secrets.RDS_ENDPOINT }} \${{ secrets. }}
+              -e RDS_ENDPOINT=${{ secrets.RDS_ENDPOINT }} \
               -e DB_NAME=${{ secrets.DB_NAME }} \
               -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
               -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
