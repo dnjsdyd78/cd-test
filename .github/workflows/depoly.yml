@@ -60,7 +60,7 @@ jobs:
               -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
               -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
               -e ITEM_API_KEY=${{ secrets.ITEM_API_KEY }} \
-              ${{ secrets.DOCKER_USERNAME }}/{{ secrets.IMAGE_NAME }}
+              ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}
             # 중지된 컨테이너 제거, 사용하지 않는 도커 이미지 제거
             sudo docker rm $(sudo docker ps --filter 'status=exited' -a -q)
             sudo docker image prune -a -f
