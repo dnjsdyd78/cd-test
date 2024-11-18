@@ -48,7 +48,7 @@ jobs:
           # Docker pull & run
           script: |
             # EC2 내에서 Docker 로그인
-            echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
             # Docker 이미지 풀 및 실행
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}
             sudo docker stop $(sudo docker ps -a -q)
