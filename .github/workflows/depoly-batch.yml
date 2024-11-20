@@ -13,7 +13,6 @@ on:
           - info
           - warning
           - debug
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -58,7 +57,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}
             sudo docker stop $(sudo docker ps -a -q)
             sudo docker run -d \
-              -p 8080:8080 \
+              -p 8081:8081 \
               -e API_PORT=${{ secrets.API_PORT }} \
               -e API_URL=${{ secrets.API_URL }} \
               -e RDS_ENDPOINT=${{ secrets.RDS_ENDPOINT }} \
