@@ -9,6 +9,17 @@ on:
     branches:
       - main
 
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -30,7 +41,9 @@ jobs:
       # Docker 이미지 빌드 및 푸쉬(배치 모듈 도커 이미지 빌드)
       - name: Build and push Docker image
         run: |
-          docker build -f Dockerfile-batch -t project509-batch:latest .
+          docker build -f Dockerfile-batch \
+          --build-arg RDS_ENDPOINT=${{ secrets.RDS_ENDPOINT }} \
+          -t project509-batch:latest .
           docker tag project509-batch:latest ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}
 
@@ -53,13 +66,13 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}
             sudo docker stop $(sudo docker ps -a -q)
             sudo docker run -d \
-              -p 8080:8080 \
+              -p 8081:8081 \
               -e API_PORT=${{ secrets.API_PORT }} \
               -e API_URL=${{ secrets.API_URL }} \
               -e RDS_ENDPOINT=${{ secrets.RDS_ENDPOINT }} \
               -e DB_NAME=${{ secrets.DB_NAME }} \
               -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-              -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
+              -e DB_USERNAME=${{ secrets.DB_NAME }} \
               -e ITEM_API_KEY=${{ secrets.ITEM_API_KEY }} \
               ${{ secrets.DOCKER_USERNAME }}/${{ secrets.IMAGE_NAME }}
             # 중지된 컨테이너 제거, 사용하지 않는 도커 이미지 제거
